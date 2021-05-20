@@ -34,33 +34,16 @@ public class CategoriaController {
 	}
 
 	@PostMapping
-	public String save(@Valid Categoria categoria,
-					   BindingResult result,
-					   Model model,
-					   RedirectAttributes attributes) {
+	public String save(@Valid Categoria categoria, BindingResult result, Model model, RedirectAttributes attributes) {
 		if ( result.hasErrors() ) {
 			model.addAttribute("categoria", categoria);
 			return "categoria/form";
 		}
 		
 		categoriaService.save(categoria);
-		attributes.addFlashAttribute("sucesso", 
-									 "Registro salvo com sucesso!");
+		attributes.addFlashAttribute("sucesso", "Registro salvo com sucesso!");
 		return "redirect:/categoria";
 	}
-
-	/*
-	@PostMapping
-	public ResponseEntity<?> save(@Valid Categoria categoria,
-								  BindingResult result,
-								  Model model,
-								  RedirectAttributes attributes) {
-		if ( result.hasErrors() ) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		categoriaService.save(categoria);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}*/
 
 	@GetMapping("{id}") // /categoria/25
  	public String form(@PathVariable Long id, Model model) {
@@ -68,27 +51,15 @@ public class CategoriaController {
 		return "categoria/form";
 	}
 	
-	/*@DeleteMapping("{id}") // /categoria/25
-	public String delete(@PathVariable Long id,
-						 RedirectAttributes attributes) {
+	@DeleteMapping("{id}") // /categoria/25
+	public String delete(@PathVariable Long id, RedirectAttributes attributes) {
 		try {
 			categoriaService.delete(id);
-			attributes.addFlashAttribute("sucesso", 
-					"Registro removido com sucesso!");
+			attributes.addFlashAttribute("sucesso", "Registro removido com sucesso!");
 		} catch (Exception e) {
-			attributes.addFlashAttribute("erro", 
-					"Falha ao remover o registro!");
+			attributes.addFlashAttribute("erro", "Falha ao remover o registro!");
 		}
 		return "redirect:/categoria";
-	}*/
-	@DeleteMapping("{id}") // /categoria/1
-	public ResponseEntity<?> delete(@PathVariable Long id) {
-		try {
-			categoriaService.delete(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 	}
 }
 

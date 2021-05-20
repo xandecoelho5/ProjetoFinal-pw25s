@@ -1,6 +1,8 @@
 package br.edu.utfpr.pb.mercadoEmCasa.service.impl;
 
+import br.edu.utfpr.pb.mercadoEmCasa.model.PasswordResetToken;
 import br.edu.utfpr.pb.mercadoEmCasa.model.Usuario;
+import br.edu.utfpr.pb.mercadoEmCasa.repository.PasswordTokenRepository;
 import br.edu.utfpr.pb.mercadoEmCasa.repository.UsuarioRepository;
 import br.edu.utfpr.pb.mercadoEmCasa.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long>
-		implements UsuarioService, UserDetailsService{
+public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long> implements UsuarioService, UserDetailsService{
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Override
 	protected JpaRepository<Usuario, Long> getRepository() {
 		return usuarioRepository;
@@ -31,4 +32,18 @@ public class UsuarioServiceImpl extends CrudServiceImpl<Usuario, Long>
 		return usuario;
 	}
 
+	@Override
+	public Usuario findByEmail(String email) {
+		return usuarioRepository.findByEmail(email);
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+		return usuarioRepository.findByUsername(username);
+	}
+
+	@Override
+	public void updatePassword(String password, Long userId) {
+		usuarioRepository.updatePassword(password, userId);
+	}
 }

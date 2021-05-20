@@ -16,55 +16,61 @@ import br.edu.utfpr.pb.mercadoEmCasa.service.impl.UsuarioServiceImpl;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UsuarioServiceImpl usuarioServiceImpl;
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-			.exceptionHandling().accessDeniedPage("/403")
-			.and().formLogin().loginPage("/login")
-			.defaultSuccessUrl("/")
-			.failureUrl("/login?error=bad_credentials").permitAll()
-			.and().logout()
-			.logoutSuccessUrl("/login")
-			.and().authorizeRequests()
-				.antMatchers("/genero/**").hasAnyRole("USER", "ADMIN")
-				.antMatchers("/produtora/**").hasAnyRole("USER", "ADMIN")
-				.antMatchers("/serie/**").hasRole("ADMIN")
-				.antMatchers("/cadastro/**").permitAll()
-				.antMatchers("/**").authenticated();
-	}
-	
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring()
-				.antMatchers("/css/**")
-				.antMatchers("/js/**")
-				.antMatchers("/images/**")
-				.antMatchers("/assets/**")
-				.antMatchers("/vendors/**")
-				.antMatchers("/webjars/**");
-	}
-	
-	@Bean
-	@Override
-	protected UserDetailsService userDetailsService() {
-		return usuarioServiceImpl;
-	}
-	
-	@Bean
-	protected PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) 
-				throws Exception {
-		auth.userDetailsService( userDetailsService() )
-			.passwordEncoder( passwordEncoder() );
-	}
+    @Autowired
+    private UsuarioServiceImpl usuarioServiceImpl;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+//		http.csrf().disable()
+//				.exceptionHandling().accessDeniedPage("/403")
+//				.and().logout()
+//				.logoutSuccessUrl("/login")
+//				.and().authorizeRequests()
+//				.antMatchers("/**").permitAll();
+
+        http.csrf().disable()
+                .exceptionHandling().accessDeniedPage("/403")
+                .and().formLogin().loginPage("/login")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error=bad_credentials").permitAll()
+                .and().logout()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutSuccessUrl("/")
+                .and().authorizeRequests()
+                .antMatchers("/registration**", "/forgot-password**", "/reset-password**").permitAll()
+                .antMatchers("/checkout").authenticated()
+                .antMatchers("/account").authenticated()
+                .antMatchers("/pedidoItem/pedido/*").authenticated();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/css/**")
+                .antMatchers("/js/**")
+                .antMatchers("/images/**")
+                .antMatchers("/assets/**")
+                .antMatchers("/vendors/**")
+                .antMatchers("/webjars/**");
+    }
+
+    @Bean
+    @Override
+    protected UserDetailsService userDetailsService() {
+        return usuarioServiceImpl;
+    }
+
+    @Bean
+    protected PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+    }
 }
 

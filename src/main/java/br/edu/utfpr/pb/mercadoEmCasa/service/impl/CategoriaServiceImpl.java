@@ -17,5 +17,4 @@ public class CategoriaServiceImpl extends CrudServiceImpl<Categoria, Long>  impl
 	protected JpaRepository<Categoria, Long> getRepository() {
 		return categoriaRepository;
 	}
-
 }

@@ -20,8 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "nome"})
-public class Permissao implements Serializable,
-								  GrantedAuthority{
+public class Permissao implements Serializable, GrantedAuthority{
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,6 +34,4 @@ public class Permissao implements Serializable,
 	public String getAuthority() {
 		return this.nome;
 	}
-	
-	
 }

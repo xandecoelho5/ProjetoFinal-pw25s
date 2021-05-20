@@ -17,5 +17,4 @@ public class MarcaServiceImpl extends CrudServiceImpl<Marca, Long>  implements M
 	protected JpaRepository<Marca, Long> getRepository() {
 		return marcaRepository;
 	}
-
 }
