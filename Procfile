@@ -1,1 +1,1 @@
-web: java -jar out/artifacts/mercadoEmCasa_jar/mercadoEmCasa.jar
+web: java -jar target/mercadoEmCasa-0.0.1-SNAPSHOT.jar
